@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrating Satellite Data and Sentiment Analysis for Comprehensive Environmental Monitoring and Public Perception of Climate Change</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        select {
+            padding: 5px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .image-container div {
+            position: relative;
+            cursor: pointer;
+        }
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+        .image-title {
+            font-size: 18px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        /* Fullscreen overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .fullscreen-overlay img {
+            max-width: 100%;
+            max-height: 100%;
+            border: 3px solid #fff;
+            border-radius: 10px;
+            transform: scale(1.7);
+            animation: zoomIn 1s ease;
+            transition: transform 0.3s ease; /* Smooth scaling */
+        }
+        /* Animation */
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1.7);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Integrating Satellite Data and Sentiment Analysis for Comprehensive Environmental Monitoring and Public Perception of Climate Change</h1>
+    <h2>Brian Gantz, Thomas Bordino - Columbia University - Big Data Analytics (EECS E6893)</h2>
+    
+    <label for="index-select">Select Time Interval: </label>
+    <select id="index-select" onchange="displayImages()">
+        <script>
+            for (let i = 0; i <= 12; i++) {
+                let year = 2023;
+                if (i < 12) {
+                    let month = (i + 1).toString().padStart(2, '0'); // Ensures two digits for months
+                    document.write(`<option value="${i}">${year}-${month}</option>`);
+                } else {
+                    document.write(`<option value="12">${year} Entirely</option>`);
+                }
+            }
+        </script>
+    </select>
+
+    <div class="image-container" id="image-container"></div>
+
+    <!-- Container for NO2 emissions map -->
+    <h2 style="margin-top: 30px;">NO2 Emissions Map with NASA Satellite Data</h2>
+    <div id="no2-container"></div>
+
+
+    <!-- Fullscreen Overlay -->
+    <div class="fullscreen-overlay" id="fullscreen-overlay" onclick="hideFullScreen()">
+        <div style="text-align: center;">
+            <img src="" id="fullscreen-image" alt="Full Image">
+            <div id="fullscreen-title" style="color: #fff; margin-top: 10px; font-size: 20px; font-weight: bold;"></div>
+        </div>
+    </div>
+
+
+    <script>
+        const imageTypes = [
+            { key: 'biodiversity', title: 'Topic Biodiversity' },
+            { key: 'water', title: 'Topic Water' },
+            { key: 'energy', title: 'Topic Energy' },
+            { key: 'forest', title: 'Topic Forest' },
+            { key: 'count', title: 'Articles Count' },
+            { key: 'emo', title: 'Emotion' },
+            { key: 'sent', title: 'Sentiment Score' },
+        ];
+    
+        function displayImages() {
+            const index = document.getElementById("index-select").value;
+            const container = document.getElementById("image-container");
+            container.innerHTML = ""; // Clear previous images
+
+            // Display all the regular images
+            imageTypes.forEach(item => {
+                const imagePath = `last_maps/${item.key}_${index}.png`;
+                const imageHTML = `
+                    <div onclick="showFullScreen('${imagePath}', '${item.title}')">
+                        <img src="${imagePath}" alt="${item.title}">
+                        <div class="image-title">${item.title}</div>
+                    </div>
+                `;
+                container.innerHTML += imageHTML;
+            });
+
+            // Display NO2 emissions map in a separate container
+            const no2Container = document.getElementById("no2-container");
+            no2Container.innerHTML = ""; // Clear previous NO2 map if any
+
+            const no2ImagePath = `last_maps/NO2map.png`;
+            const no2ImageTitle = "NO2 Emissions Map (NASA Data)";
+            const no2ImageHTML = `
+                <div onclick="showFullScreen('${no2ImagePath}', '${no2ImageTitle}')">
+                    <img src="${no2ImagePath}" alt="${no2ImageTitle}" style="width: 300px; height: auto; border: 2px solid #ccc; border-radius: 5px;">
+                    <div class="image-title" style="font-size: 18px; margin-top: 10px;">${no2ImageTitle}</div>
+                </div>
+            `;
+            no2Container.innerHTML = no2ImageHTML;
+        }
+
+
+    
+        function showFullScreen(imagePath, imageTitle) {
+            const overlay = document.getElementById("fullscreen-overlay");
+            const fullscreenImage = document.getElementById("fullscreen-image");
+            const fullscreenTitle = document.getElementById("fullscreen-title");
+            
+            fullscreenImage.src = imagePath;
+            fullscreenTitle.textContent = imageTitle; // Set the title
+            overlay.style.display = "flex"; // Show overlay
+        }
+    
+        function hideFullScreen() {
+            const overlay = document.getElementById("fullscreen-overlay");
+            overlay.style.display = "none"; // Hide overlay
+        }
+    
+        // Display images for the first group on page load
+        displayImages();
+    </script>
+    
+</body>
+</html>
