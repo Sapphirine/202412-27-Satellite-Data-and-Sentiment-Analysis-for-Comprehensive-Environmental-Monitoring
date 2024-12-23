@@ -1,5 +1,7 @@
 # 202412-27-Satellite-Data-and-Sentiment-Analysis-for-Comprehensive-Environmental-Monitoring
 
+Project presentation video: https://www.youtube.com/watch?v=t9iQPvF8nIU
+
 This project integrates high-resolution satellite data from NASA’s TROPOMI with advanced natural language processing (NLP) techniques to provide a comprehensive framework for environmental monitoring and understanding public perceptions of climate change. By combining pollutant distribution maps with sentiment and thematic analyses of climate-related news articles, the research aims to address gaps in correlating geospatial data with societal discourse. This interdisciplinary approach enhances insights into the intersection of environmental conditions and public awareness, offering valuable implications for policymaking, public communication, and environmental informatics.
 
 ## Dataset: The project utilized two primary datasets:
